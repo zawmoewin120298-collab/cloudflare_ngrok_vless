@@ -14,7 +14,7 @@ RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-6
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
     chmod +x /usr/local/bin/cloudflared
 
-# 3. Ngrok သွင်းခြင်း (Link အသစ်နှင့် ပိုမိုခိုင်မာသောနည်းလမ်း)
+# 3. Ngrok သွင်းခြင်း (Link ပြဿနာမရှိစေရန် Direct Static Binary ကို သုံးထားသည်)
 RUN wget https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.zip && \
     unzip ngrok-v3-stable-linux-amd64.zip && \
     mv ngrok /usr/local/bin/ngrok && \
@@ -24,7 +24,7 @@ RUN wget https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.zip &&
 WORKDIR /etc/xray
 COPY . .
 
-# ဖိုင် format များ Linux အတွက် ပြင်ဆင်ခြင်း
+# ဖိုင် format များ ပြင်ဆင်ခြင်း
 RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
