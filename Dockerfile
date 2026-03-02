@@ -14,16 +14,15 @@ RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-6
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
     chmod +x /usr/local/bin/cloudflared
 
-# 3. Ngrok သွင်းခြင်း (Link အသစ်နှင့် ပိုမိုစိတ်ချရသော ပုံစံဖြင့် ပြင်ထားသည်)
-RUN wget https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.tgz && \
-    tar -xzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin && \
-    chmod +x /usr/local/bin/ngrok && \
-    rm ngrok-v3-stable-linux-amd64.tgz
+# 3. Ngrok သွင်းခြင်း (Link ကို ပိုမိုတည်ငြိမ်သော နေရာမှ ယူထားသည်)
+RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apk/keys/ngrok.asc > /dev/null && \
+    echo "https://ngrok-agent.s3.amazonaws.com/alpine/v3.17/main" | tee -a /etc/apk/repositories && \
+    apk update && apk add ngrok
 
 WORKDIR /etc/xray
 COPY . .
 
-# ဖိုင် format များ ပြင်ဆင်ခြင်းနှင့် script ကို run ခွင့်ပေးခြင်း
+# ဖိုင် format များ ပြင်ဆင်ခြင်း
 RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
