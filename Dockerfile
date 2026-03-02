@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-# လိုအပ်တဲ့ Tools များသွင်းခြင်း
+# လိုအပ်သော tools များသွင်းခြင်း
 RUN apk add --no-cache wget unzip ca-certificates bash curl dos2unix
 
 # 1. Xray-core သွင်းခြင်း
@@ -23,7 +23,7 @@ RUN wget https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.tgz &&
 WORKDIR /etc/xray
 COPY . .
 
-# ဖိုင် format များ ပြင်ဆင်ခြင်း
+# ဖိုင် format များ ပြင်ဆင်ခြင်းနှင့် script ကို run ခွင့်ပေးခြင်း
 RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
