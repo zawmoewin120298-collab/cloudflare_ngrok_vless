@@ -1,29 +1,29 @@
 FROM alpine:latest
 
-# Install tools
+# လိုအပ်တဲ့ Tools များသွင်းခြင်း
 RUN apk add --no-cache wget unzip ca-certificates bash curl dos2unix
 
-# Install Xray
+# 1. Xray-core သွင်းခြင်း
 RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip && \
     unzip Xray-linux-64.zip && \
     mv xray /usr/local/bin/xray && \
     chmod +x /usr/local/bin/xray && \
     rm Xray-linux-64.zip
 
-# Install Cloudflared
+# 2. Cloudflared သွင်းခြင်း
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
     chmod +x /usr/local/bin/cloudflared
 
-# Install Ngrok
-RUN curl -s https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.tgz | tar xz -C /usr/local/bin
+# 3. Ngrok သွင်းခြင်း (Link အသစ်နှင့် ပိုမိုစိတ်ချရသော ပုံစံဖြင့် ပြင်ထားသည်)
+RUN wget https://bin.equinox.io/c/bNy73dqVs7w/ngrok-v3-stable-linux-amd64.tgz && \
+    tar -xzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin && \
+    chmod +x /usr/local/bin/ngrok && \
+    rm ngrok-v3-stable-linux-amd64.tgz
 
 WORKDIR /etc/xray
 COPY . .
 
-# Line ending issue ကို ရှင်းရန်
+# ဖိုင် format များ ပြင်ဆင်ခြင်း
 RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
-# Port 443 ကို ဖွင့်ပေးရန်
-EXPOSE 443
-
-CMD ["bash", "./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
