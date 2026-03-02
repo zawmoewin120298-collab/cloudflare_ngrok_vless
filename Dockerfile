@@ -14,9 +14,9 @@ RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-6
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
     chmod +x /usr/local/bin/cloudflared
 
-# 3. Ngrok သွင်းခြင်း (Link ကို ပိုမိုတည်ငြိမ်သော နေရာမှ ယူထားသည်)
+# 3. Ngrok သွင်းခြင်း (Official Script ကိုသုံး၍ ပိုမိုစိတ်ချရအောင် ပြင်ဆင်ထားသည်)
 RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apk/keys/ngrok.asc > /dev/null && \
-    echo "https://ngrok-agent.s3.amazonaws.com/alpine/v3.17/main" | tee -a /etc/apk/repositories && \
+    echo "https://ngrok-agent.s3.amazonaws.com/alpine/edge/main" | tee -a /etc/apk/repositories && \
     apk update && apk add ngrok
 
 WORKDIR /etc/xray
