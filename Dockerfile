@@ -1,26 +1,20 @@
 FROM alpine:latest
 
-# လိုအပ်သော tools များသွင်းခြင်း (Nodejs ပါဝင်သည်)
-RUN apk add --no-cache wget unzip ca-certificates bash curl dos2unix nodejs npm
+# လိုအပ်သော packages များသွင်းခြင်း
+RUN apk add --no-cache xray nginx bash curl
 
-# 1. Xray-core သွင်းခြင်း
-RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip && \
-    unzip Xray-linux-64.zip && \
-    mv xray /usr/local/bin/xray && \
-    chmod +x /usr/local/bin/xray && \
-    rm Xray-linux-64.zip
+# Nginx configuration (Port 80 မှာ website ပြရန်)
+RUN mkdir -p /run/nginx
+COPY nginx.conf /etc/nginx/http.d/default.conf
 
-# 2. Cloudflared သွင်းခြင်း
-RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared && \
-    chmod +x /usr/local/bin/cloudflared
+# index.html (Website အတု) ထည့်ရန်
+RUN mkdir -p /usr/share/nginx/html
+echo "<html><body><h1>Server is Running</h1></body></html>" > /usr/share/nginx/html/index.html
 
-# 3. Ngrok သွင်းခြင်း (Link မသုံးဘဲ npm မှတစ်ဆင့် သွင်းသည် - ဤနည်းလမ်းသည် 404 error ကိုကျော်လွှားနိုင်သည်)
-RUN npm install -g ngrok
-
+# Xray configuration ကူးယူခြင်း
 WORKDIR /etc/xray
 COPY . .
 
-# ဖိုင် format ပြင်ဆင်ခြင်း
-RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
