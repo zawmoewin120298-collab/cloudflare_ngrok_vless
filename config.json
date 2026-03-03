@@ -1,6 +1,7 @@
 {
   "inbounds": [{
-    "port": 443,
+    "port": 10000,
+    "listen": "127.0.0.1",
     "protocol": "vless",
     "settings": {
       "clients": [{"id": "f2e17b4d-22fd-44a4-90db-40649717be8e"}],
@@ -8,7 +9,9 @@
     },
     "streamSettings": {
       "network": "ws",
-      "wsSettings": {"path": "/getWorkerUpdates"}
+      "wsSettings": {
+        "path": "/zawmoewin"
+      }
     },
     "sniffing": {
       "enabled": true,
