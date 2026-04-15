@@ -1,6 +1,6 @@
 {
   "inbounds": [{
-    "port": 10000,
+    "port": 443,
     "listen": "127.0.0.1",
     "protocol": "vless",
     "settings": {
@@ -9,14 +9,8 @@
     },
     "streamSettings": {
       "network": "ws",
-      "wsSettings": {
-        "path": "/zawmoewin"
-      }
-    },
-    "sniffing": {
-      "enabled": true,
-      "destOverride": ["http", "tls"]
+      "wsSettings": { "path": "/getWorkerUpdates" }
     }
   }],
-  "outbounds": [{"protocol": "freedom","settings": {}}]
+  "outbounds": [{"protocol": "freedom"}]
 }
