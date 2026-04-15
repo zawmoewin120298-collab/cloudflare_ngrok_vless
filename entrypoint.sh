@@ -1,11 +1,18 @@
 #!/bin/bash
-# Nginx ကို အရင် run ပါ (ဒါမှ Railway က အလုပ်လုပ်တယ်လို့ သတ်မှတ်မှာပါ)
+
+# Nginx ကို background မှာ run ပါ
 nginx
-# Xray ကို run ပါ
-xray run -c /etc/xray/config.json &
-# Cloudflare Tunnel run ပါ
+
+# Xray ကို background မှာ run ပါ
+# /usr/local/bin/xray လို့ လမ်းကြောင်းအပြည့်အစုံ သုံးတာ ပိုစိတ်ချရပါတယ်
+/usr/local/bin/xray run -c /etc/xray/config.json &
+
+# Cloudflare Tunnel ရှိရင် run မယ်၊ မရှိရင် Xray ကို ရှေ့ထုတ်ပြီး စောင့်မယ်
 if [ ! -z "$TUNNEL_TOKEN" ]; then
-    cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN
+    echo "Starting Cloudflare Tunnel..."
+    /usr/local/bin/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN
 else
-    wait
+    echo "No Tunnel Token found, running in direct mode..."
+    # Xray process ကို foreground ပြန်ခေါ်ပြီး စောင့်ခိုင်းတာပါ
+    wait -n
 fi
